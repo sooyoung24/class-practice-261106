@@ -1,7 +1,10 @@
+import html
+
 import streamlit as st
 
+
 st.set_page_config(
-    page_title="My Introduction",
+    page_title="나의 소개",
     page_icon="🌸",
     layout="wide",
 )
@@ -10,185 +13,187 @@ st.markdown(
     """
     <style>
     .stApp {
-        background: linear-gradient(135deg, #fff6f8 0%, #f6f7ff 48%, #f1fbf7 100%);
+        background: linear-gradient(135deg, #fff8fb 0%, #f7fbff 50%, #f8fff8 100%);
     }
 
-    .block-container {
-        max-width: 1100px;
-        padding-top: 2rem;
-        padding-bottom: 3rem;
+    [data-testid="stHeader"] {
+        background: transparent;
     }
 
     .hero {
-        text-align: center;
-        padding: 3rem 1.5rem 2.5rem;
-        margin-bottom: 2rem;
-        background: rgba(255, 255, 255, 0.82);
-        border: 1px solid rgba(255, 255, 255, 0.9);
+        padding: 3rem 2rem;
+        margin-bottom: 1.5rem;
         border-radius: 24px;
-        box-shadow: 0 12px 30px rgba(120, 105, 140, 0.08);
-    }
-
-    .profile-photo {
-        width: 112px;
-        height: 112px;
-        margin: 0 auto 1rem;
-        display: grid;
-        place-items: center;
-        border-radius: 50%;
-        background: #d9e7ff;
-        color: #5d668a;
-        font-size: 3rem;
+        background: linear-gradient(120deg, #ffd9e8, #dceeff);
+        text-align: center;
+        box-shadow: 0 12px 30px rgba(96, 104, 120, 0.08);
     }
 
     .hero h1 {
-        margin-bottom: 0.35rem;
-        color: #4f5269;
-        font-size: 2.6rem;
-        letter-spacing: 0;
+        margin-bottom: 0.3rem;
+        color: #4a4055;
+        font-size: 3rem;
     }
 
     .hero p {
-        margin: 0;
-        color: #777a91;
-        font-size: 1.05rem;
+        color: #686176;
+        font-size: 1.1rem;
+    }
+
+    .profile-card {
+        min-height: 180px;
+        height: 100%;
+        padding: 1.4rem;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.78);
+        border: 1px solid rgba(255, 255, 255, 0.9);
+        box-shadow: 0 8px 24px rgba(96, 104, 120, 0.08);
+    }
+
+    .profile-card h3 {
+        margin-top: 0;
+        color: #56505f;
+        font-size: 1.15rem;
+    }
+
+    .profile-card p {
+        color: #67616d;
+        white-space: pre-wrap;
     }
 
     .section-title {
-        margin: 0 0 1rem;
-        color: #55586d;
-        font-size: 1.45rem;
+        margin-top: 1.5rem;
+        color: #4f4859;
     }
 
-    .info-card {
-        min-height: 155px;
-        padding: 1.25rem;
-        border-radius: 18px;
-        box-shadow: 0 8px 24px rgba(100, 100, 120, 0.07);
+    div[data-testid="stTextInput"] input,
+    div[data-testid="stTextArea"] textarea {
+        border-radius: 12px;
+        background-color: rgba(255, 255, 255, 0.9);
     }
 
-    .lavender { background: #ebe6ff; }
-    .peach { background: #ffe9dc; }
-    .mint { background: #dff4ea; }
-    .blue { background: #deefff; }
-    .pink { background: #ffe5ed; }
-
-    .card-emoji {
-        font-size: 1.8rem;
-        margin-bottom: 0.55rem;
+    div.stButton > button {
+        border-radius: 999px;
+        border: none;
+        padding: 0.55rem 1.4rem;
+        background: #b7d8f2;
+        color: #37485a;
+        font-weight: 700;
     }
 
-    .info-card h3 {
-        margin: 0 0 0.55rem;
-        color: #55586d;
-        font-size: 1.05rem;
-    }
-
-    .info-card p {
-        margin: 0;
-        color: #707287;
-        line-height: 1.55;
-    }
-
-    .intro-text {
-        padding: 1.5rem;
-        margin-bottom: 1.5rem;
-        border-left: 5px solid #c9c1ee;
-        border-radius: 8px;
-        background: rgba(255, 255, 255, 0.68);
-        color: #66687b;
-        line-height: 1.7;
-    }
-
-    div[data-testid="stMarkdownContainer"] p {
-        color: inherit;
+    div.stButton > button:hover {
+        background: #ffd0de;
+        color: #57404a;
     }
     </style>
     """,
     unsafe_allow_html=True,
 )
 
+defaults = {
+    "name": "OOO",
+    "affiliation": "OO대학교 OOO학과",
+    "dream": "사람들에게 도움이 되는 서비스를 만들고 싶어요.",
+    "travels": "제주도, 부산, 일본 도쿄",
+    "likes": "좋아하는 음식, 음악, 영화, 계절",
+    "hobbies": "독서, 사진 찍기, 산책하기, 맛집 탐방",
+    "introduction": "저는 새로운 것을 배우고 직접 만들어 보는 것을 좋아합니다. 작은 경험을 쌓아 저만의 이야기를 만들어 가고 싶어요.",
+}
+
+if "profile" not in st.session_state:
+    st.session_state.profile = defaults.copy()
+
+safe_profile = {
+    key: html.escape(str(value))
+    for key, value in st.session_state.profile.items()
+}
+
 st.markdown(
-    """
+    f"""
     <section class="hero">
-        <div class="profile-photo">🌷</div>
-        <h1>안녕하세요, 저는 이수영입니다.</h1>
-        <p>배우고 성장하는 것을 좋아하는 사람입니다.</p>
+        <h1>🌸 안녕하세요, 저는 {safe_profile['name']}입니다</h1>
+        <p>배우고, 여행하고, 좋아하는 일을 찾아가는 일상을 기록합니다.</p>
     </section>
     """,
     unsafe_allow_html=True,
 )
 
-st.markdown('<p class="intro-text">저의 꿈과 관심사를 담은 작은 소개 페이지입니다. 아래 내용을 나만의 이야기로 자유롭게 바꾸어 보세요.</p>', unsafe_allow_html=True)
+st.markdown('<h2 class="section-title">나에 대해</h2>', unsafe_allow_html=True)
+profile_col1, profile_col2 = st.columns([2, 3])
 
-st.markdown('<h2 class="section-title">About me</h2>', unsafe_allow_html=True)
-left, right = st.columns(2, gap="medium")
-
-with left:
+with profile_col1:
     st.markdown(
-        """
-        <article class="info-card lavender">
-            <div class="card-emoji">🎓</div>
-            <h3>소속</h3>
-            <p>청주교육대학교 컴퓨터교육과에 재학 중입니다.</p>
-        </article>
+        f"""
+        <div class="profile-card" style="background: #fff0f5;">
+            <h3>👋 한 줄 소개</h3>
+            <p>{safe_profile['introduction']}</p>
+        </div>
         """,
         unsafe_allow_html=True,
     )
 
-with right:
+with profile_col2:
     st.markdown(
-        """
-        <article class="info-card peach">
-            <div class="card-emoji">🌱</div>
-            <h3>나의 꿈</h3>
-            <p>사람에게 도움이 되는 서비스를 만드는 사람이 되고 싶습니다.</p>
-        </article>
+        f"""
+        <div class="profile-card" style="background: #edf7ff;">
+            <h3>🎓 소속</h3>
+            <p>{safe_profile['affiliation']}</p>
+            <h3>🚀 나의 꿈</h3>
+            <p>{safe_profile['dream']}</p>
+        </div>
         """,
         unsafe_allow_html=True,
     )
 
-st.markdown('<h2 class="section-title" style="margin-top: 2rem;">My story</h2>', unsafe_allow_html=True)
-story_col1, story_col2, story_col3 = st.columns(3, gap="medium")
+st.markdown('<h2 class="section-title">취향과 경험</h2>', unsafe_allow_html=True)
+card1, card2, card3 = st.columns(3)
 
-with story_col1:
-    st.markdown(
-        """
-        <article class="info-card mint">
-            <div class="card-emoji">✈️</div>
-            <h3>여행</h3>
-            <p>제주도, 부산, 일본 등 새로운 곳을 여행하며 기억을 쌓고 있습니다.</p>
-        </article>
-        """,
-        unsafe_allow_html=True,
-    )
+card_data = [
+    (card1, "🧳 여행했던 곳", "travels", "#fff4d8"),
+    (card2, "💗 좋아하는 것", "likes", "#f6edff"),
+    (card3, "🎨 취미", "hobbies", "#e8f8ef"),
+]
 
-with story_col2:
-    st.markdown(
-        """
-        <article class="info-card blue">
-            <div class="card-emoji">💙</div>
-            <h3>좋아하는 것</h3>
-            <p>좋아하는 음악을 듣고, 맛있는 카페를 찾고, 아름다운 하늘을 보는 것을 좋아합니다.</p>
-        </article>
-        """,
-        unsafe_allow_html=True,
-    )
+for column, title, key, background in card_data:
+    with column:
+        st.markdown(
+            f"""
+            <div class="profile-card" style="background: {background};">
+                <h3>{title}</h3>
+                <p>{safe_profile[key]}</p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
 
-with story_col3:
-    st.markdown(
-        """
-        <article class="info-card pink">
-            <div class="card-emoji">🎨</div>
-            <h3>취미</h3>
-            <p>사진 찍기, 독서, 그림 그리기, 산책처럼 일상을 채우는 취미를 즐깁니다.</p>
-        </article>
-        """,
-        unsafe_allow_html=True,
-    )
+st.markdown('<h2 class="section-title">내 소개 직접 작성하기</h2>', unsafe_allow_html=True)
+st.caption("아래 내용을 자유롭게 수정한 뒤 저장 버튼을 눌러주세요.")
 
-st.markdown("---")
-st.markdown(
-    "<p style='text-align: center; color: #88899c;'>오늘도 조금씩 성장하는 중 ✨</p>",
-    unsafe_allow_html=True,
-)
+with st.form("profile_form"):
+    input_col1, input_col2 = st.columns(2)
+
+    with input_col1:
+        name = st.text_input("이름", value=st.session_state.profile["name"], max_chars=30)
+        affiliation = st.text_input("소속", value=st.session_state.profile["affiliation"])
+        dream = st.text_area("나의 꿈", value=st.session_state.profile["dream"])
+        travels = st.text_area("여행했던 곳", value=st.session_state.profile["travels"])
+
+    with input_col2:
+        likes = st.text_area("좋아하는 것", value=st.session_state.profile["likes"])
+        hobbies = st.text_area("취미", value=st.session_state.profile["hobbies"])
+        introduction = st.text_area("한 줄 소개", value=st.session_state.profile["introduction"])
+
+    saved = st.form_submit_button("소개 저장하기")
+
+if saved:
+    st.session_state.profile = {
+        "name": name,
+        "affiliation": affiliation,
+        "dream": dream,
+        "travels": travels,
+        "likes": likes,
+        "hobbies": hobbies,
+        "introduction": introduction,
+    }
+    st.success("소개가 저장되었습니다! 위쪽 카드도 함께 변경됩니다.")
+    st.rerun()
