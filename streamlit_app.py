@@ -1,151 +1,194 @@
 import streamlit as st
-import pandas as pd
-import math
-from pathlib import Path
 
-# Set the title and favicon that appear in the Browser's tab bar.
 st.set_page_config(
-    page_title='GDP dashboard',
-    page_icon=':earth_americas:', # This is an emoji shortcode. Could be a URL too.
+    page_title="My Introduction",
+    page_icon="🌸",
+    layout="wide",
 )
 
-# -----------------------------------------------------------------------------
-# Declare some useful functions.
-
-@st.cache_data
-def get_gdp_data():
-    """Grab GDP data from a CSV file.
-
-    This uses caching to avoid having to read the file every time. If we were
-    reading from an HTTP endpoint instead of a file, it's a good idea to set
-    a maximum age to the cache with the TTL argument: @st.cache_data(ttl='1d')
+st.markdown(
     """
+    <style>
+    .stApp {
+        background: linear-gradient(135deg, #fff6f8 0%, #f6f7ff 48%, #f1fbf7 100%);
+    }
 
-    # Instead of a CSV on disk, you could read from an HTTP endpoint here too.
-    DATA_FILENAME = Path(__file__).parent/'data/gdp_data.csv'
-    raw_gdp_df = pd.read_csv(DATA_FILENAME)
+    .block-container {
+        max-width: 1100px;
+        padding-top: 2rem;
+        padding-bottom: 3rem;
+    }
 
-    MIN_YEAR = 1960
-    MAX_YEAR = 2022
+    .hero {
+        text-align: center;
+        padding: 3rem 1.5rem 2.5rem;
+        margin-bottom: 2rem;
+        background: rgba(255, 255, 255, 0.82);
+        border: 1px solid rgba(255, 255, 255, 0.9);
+        border-radius: 24px;
+        box-shadow: 0 12px 30px rgba(120, 105, 140, 0.08);
+    }
 
-    # The data above has columns like:
-    # - Country Name
-    # - Country Code
-    # - [Stuff I don't care about]
-    # - GDP for 1960
-    # - GDP for 1961
-    # - GDP for 1962
-    # - ...
-    # - GDP for 2022
-    #
-    # ...but I want this instead:
-    # - Country Name
-    # - Country Code
-    # - Year
-    # - GDP
-    #
-    # So let's pivot all those year-columns into two: Year and GDP
-    gdp_df = raw_gdp_df.melt(
-        ['Country Code'],
-        [str(x) for x in range(MIN_YEAR, MAX_YEAR + 1)],
-        'Year',
-        'GDP',
+    .profile-photo {
+        width: 112px;
+        height: 112px;
+        margin: 0 auto 1rem;
+        display: grid;
+        place-items: center;
+        border-radius: 50%;
+        background: #d9e7ff;
+        color: #5d668a;
+        font-size: 3rem;
+    }
+
+    .hero h1 {
+        margin-bottom: 0.35rem;
+        color: #4f5269;
+        font-size: 2.6rem;
+        letter-spacing: 0;
+    }
+
+    .hero p {
+        margin: 0;
+        color: #777a91;
+        font-size: 1.05rem;
+    }
+
+    .section-title {
+        margin: 0 0 1rem;
+        color: #55586d;
+        font-size: 1.45rem;
+    }
+
+    .info-card {
+        min-height: 155px;
+        padding: 1.25rem;
+        border-radius: 18px;
+        box-shadow: 0 8px 24px rgba(100, 100, 120, 0.07);
+    }
+
+    .lavender { background: #ebe6ff; }
+    .peach { background: #ffe9dc; }
+    .mint { background: #dff4ea; }
+    .blue { background: #deefff; }
+    .pink { background: #ffe5ed; }
+
+    .card-emoji {
+        font-size: 1.8rem;
+        margin-bottom: 0.55rem;
+    }
+
+    .info-card h3 {
+        margin: 0 0 0.55rem;
+        color: #55586d;
+        font-size: 1.05rem;
+    }
+
+    .info-card p {
+        margin: 0;
+        color: #707287;
+        line-height: 1.55;
+    }
+
+    .intro-text {
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        border-left: 5px solid #c9c1ee;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.68);
+        color: #66687b;
+        line-height: 1.7;
+    }
+
+    div[data-testid="stMarkdownContainer"] p {
+        color: inherit;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
+st.markdown(
+    """
+    <section class="hero">
+        <div class="profile-photo">🌷</div>
+        <h1>안녕하세요, 저는 이수영입니다.</h1>
+        <p>배우고 성장하는 것을 좋아하는 사람입니다.</p>
+    </section>
+    """,
+    unsafe_allow_html=True,
+)
+
+st.markdown('<p class="intro-text">저의 꿈과 관심사를 담은 작은 소개 페이지입니다. 아래 내용을 나만의 이야기로 자유롭게 바꾸어 보세요.</p>', unsafe_allow_html=True)
+
+st.markdown('<h2 class="section-title">About me</h2>', unsafe_allow_html=True)
+left, right = st.columns(2, gap="medium")
+
+with left:
+    st.markdown(
+        """
+        <article class="info-card lavender">
+            <div class="card-emoji">🎓</div>
+            <h3>소속</h3>
+            <p>청주교육대학교 컴퓨터교육과에 재학 중입니다.</p>
+        </article>
+        """,
+        unsafe_allow_html=True,
     )
 
-    # Convert years from string to integers
-    gdp_df['Year'] = pd.to_numeric(gdp_df['Year'])
+with right:
+    st.markdown(
+        """
+        <article class="info-card peach">
+            <div class="card-emoji">🌱</div>
+            <h3>나의 꿈</h3>
+            <p>사람에게 도움이 되는 서비스를 만드는 사람이 되고 싶습니다.</p>
+        </article>
+        """,
+        unsafe_allow_html=True,
+    )
 
-    return gdp_df
+st.markdown('<h2 class="section-title" style="margin-top: 2rem;">My story</h2>', unsafe_allow_html=True)
+story_col1, story_col2, story_col3 = st.columns(3, gap="medium")
 
-gdp_df = get_gdp_data()
+with story_col1:
+    st.markdown(
+        """
+        <article class="info-card mint">
+            <div class="card-emoji">✈️</div>
+            <h3>여행</h3>
+            <p>제주도, 부산, 일본 등 새로운 곳을 여행하며 기억을 쌓고 있습니다.</p>
+        </article>
+        """,
+        unsafe_allow_html=True,
+    )
 
-# -----------------------------------------------------------------------------
-# Draw the actual page
+with story_col2:
+    st.markdown(
+        """
+        <article class="info-card blue">
+            <div class="card-emoji">💙</div>
+            <h3>좋아하는 것</h3>
+            <p>좋아하는 음악을 듣고, 맛있는 카페를 찾고, 아름다운 하늘을 보는 것을 좋아합니다.</p>
+        </article>
+        """,
+        unsafe_allow_html=True,
+    )
 
-# Set the title that appears at the top of the page.
-'''
-# :earth_americas: GDP dashboard
+with story_col3:
+    st.markdown(
+        """
+        <article class="info-card pink">
+            <div class="card-emoji">🎨</div>
+            <h3>취미</h3>
+            <p>사진 찍기, 독서, 그림 그리기, 산책처럼 일상을 채우는 취미를 즐깁니다.</p>
+        </article>
+        """,
+        unsafe_allow_html=True,
+    )
 
-Browse GDP data from the [World Bank Open Data](https://data.worldbank.org/) website. As you'll
-notice, the data only goes to 2022 right now, and datapoints for certain years are often missing.
-But it's otherwise a great (and did I mention _free_?) source of data.
-'''
-
-# Add some spacing
-''
-''
-
-min_value = gdp_df['Year'].min()
-max_value = gdp_df['Year'].max()
-
-from_year, to_year = st.slider(
-    'Which years are you interested in?',
-    min_value=min_value,
-    max_value=max_value,
-    value=[min_value, max_value])
-
-countries = gdp_df['Country Code'].unique()
-
-if not len(countries):
-    st.warning("Select at least one country")
-
-selected_countries = st.multiselect(
-    'Which countries would you like to view?',
-    countries,
-    ['DEU', 'FRA', 'GBR', 'BRA', 'MEX', 'JPN'])
-
-''
-''
-''
-
-# Filter the data
-filtered_gdp_df = gdp_df[
-    (gdp_df['Country Code'].isin(selected_countries))
-    & (gdp_df['Year'] <= to_year)
-    & (from_year <= gdp_df['Year'])
-]
-
-st.header('GDP over time', divider='gray')
-
-''
-
-st.line_chart(
-    filtered_gdp_df,
-    x='Year',
-    y='GDP',
-    color='Country Code',
+st.markdown("---")
+st.markdown(
+    "<p style='text-align: center; color: #88899c;'>오늘도 조금씩 성장하는 중 ✨</p>",
+    unsafe_allow_html=True,
 )
-
-''
-''
-
-
-first_year = gdp_df[gdp_df['Year'] == from_year]
-last_year = gdp_df[gdp_df['Year'] == to_year]
-
-st.header(f'GDP in {to_year}', divider='gray')
-
-''
-
-cols = st.columns(4)
-
-for i, country in enumerate(selected_countries):
-    col = cols[i % len(cols)]
-
-    with col:
-        first_gdp = first_year[first_year['Country Code'] == country]['GDP'].iat[0] / 1000000000
-        last_gdp = last_year[last_year['Country Code'] == country]['GDP'].iat[0] / 1000000000
-
-        if math.isnan(first_gdp):
-            growth = 'n/a'
-            delta_color = 'off'
-        else:
-            growth = f'{last_gdp / first_gdp:,.2f}x'
-            delta_color = 'normal'
-
-        st.metric(
-            label=f'{country} GDP',
-            value=f'{last_gdp:,.0f}B',
-            delta=growth,
-            delta_color=delta_color
-        )
